@@ -27,6 +27,13 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+# URL base para los archivos estáticos
+STATIC_URL = '/static/'
+
+# Directorios donde Django buscará archivos estáticos adicionales
+STATICFILES_DIRS = [
+    BASE_DIR / "static",  # Esto busca en la carpeta 'static' de tu proyecto
+]
 
 # Application definition
 

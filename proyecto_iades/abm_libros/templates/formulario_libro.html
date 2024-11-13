@@ -1,0 +1,159 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de Libro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Fuentes y estilos generales */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #f9f9f9;
+    padding: 20px;
+}
+
+.formbold-main-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.formbold-form-wrapper {
+    background-color: white;
+    padding: 40px;
+    border-radius: 8px;
+    box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 600px;
+}
+
+/* Título y subtítulo */
+.formbold-form-title h2 {
+    font-size: 24px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.formbold-form-title p {
+    font-size: 14px;
+    color: #777;
+}
+
+/* Estilos de los campos del formulario */
+.formbold-mb-3 {
+    margin-bottom: 15px;
+}
+
+.formbold-form-label {
+    display: block;
+    font-size: 14px;
+    font-weight: 500;
+    color: #333;
+    margin-bottom: 5px;
+}
+
+input[type="text"], input[type="number"], input[type="submit"] {
+    width: 100%;
+    padding: 12px;
+    font-size: 14px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: #f5f5f5;
+}
+
+input[type="text"]:focus, input[type="number"]:focus {
+    border-color: #4CAF50;
+    background-color: #fff;
+}
+
+input[type="submit"] {
+    background-color: #4CAF50;
+    color: white;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 500;
+    border: none;
+    transition: background-color 0.3s;
+}
+
+input[type="submit"]:hover {
+    background-color: #45a049;
+}
+
+/* Estilos para los mensajes de error */
+p[style="color: red;"] {
+    color: red;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+
+
+    </style>
+</head>
+<body>
+<div class="formbold-main-wrapper">
+    <div class="formbold-form-wrapper">
+        
+       
+     
+
+        <form action="{% url 'formulario_libro' %}" method="POST">
+            {% csrf_token %}
+
+            {% if formulario.errors %}
+                <ul style="color: red;">
+                {% for field in formulario %}
+                    {% for error in field.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                {% endfor %}
+            </ul>
+        {% endif %}
+
+            <div class="formbold-form-title">
+                <h2>Formulario de Libro</h2>
+                <p>Complete los datos del libro.</p>
+            </div>
+
+            <div class="formbold-mb-3">
+                <label for="nombre" class="formbold-form-label">Nombre</label>
+                {{ formulario.nombre }}
+            </div>
+
+            <div class="formbold-mb-3">
+                <label for="autor" class="formbold-form-label">Autor</label>
+                {{ formulario.autor }}
+            </div>
+
+            <div class="formbold-mb-3">
+                <label for="precio" class="formbold-form-label">Precio</label>
+                {{ formulario.precio }}
+            </div>
+
+            <div class="formbold-mb-3">
+                <label for="stock" class="formbold-form-label">Stock</label>
+                {{ formulario.stock }}
+            </div>
+
+            <div class="formbold-mb-3">
+                <label for="isbn" class="formbold-form-label">ISBN</label>
+                {{ formulario.isbn }}
+            </div>
+
+            <button type="submit" class="formbold-btn">Enviar</button>
+        </form>
+    </div>
+</div>
+
+</body>
+</html>

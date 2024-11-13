@@ -1,0 +1,74 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Página de Inicio</title>
+    <style>
+        /* Estilos básicos para la página */
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: Arial, sans-serif;
+            color: white;
+        }
+
+        /* Fondo de la página */
+        .background {
+            background-image: url('https://i.pinimg.com/originals/4f/0d/37/4f0d377c4a460fe415a7f692b518260f.jpg'); /* Cambia esta ruta por la imagen de fondo */
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        /* Estilo del título */
+        h1 {
+            font-size: 4em;
+            margin-bottom: 20px;
+        }
+
+        /* Estilos de los botones */
+        .button-container {
+            margin-top: 20px;
+        }
+
+        .button {
+            background-color: #3498db; /* Color azul */
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            margin: 0 10px;
+            font-size: 1em;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+            text-decoration: none; 
+            display: inline-block;
+            margin: 10px 0;
+            width: 200px;
+            text-align: center;
+        }
+
+        .button:hover {
+            background-color: #2980b9; /* Color azul más oscuro */
+        }
+    </style>
+</head>
+<body>
+    <div class="background">
+        <div>
+            <h1>Bienvenidos a Nuestra Biblioteca</h1>
+            <div class="button-container">
+                <a href="{% url 'formulario_libro' %}" class="button">Añnadir nuevo libro</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

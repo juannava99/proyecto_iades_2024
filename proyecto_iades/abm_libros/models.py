@@ -2,8 +2,12 @@ from django.db import models
 
 # Create your models here.
 
-class Cursos(models.Model):
+class Libros(models.Model):
 
     nombre = models.CharField(max_length=40)
-    codigo = models.IntegerField()
+    autor = models.CharField(max_length=40)
+    precio = models.IntegerField()
+    stock = models.IntegerField()
+    ISBN = models.IntegerField(unique=True)
+    
     
