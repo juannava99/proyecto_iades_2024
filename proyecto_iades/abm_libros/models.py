@@ -8,6 +8,5 @@ class Libros(models.Model):
     autor = models.CharField(max_length=40)
     precio = models.IntegerField()
     stock = models.IntegerField()
-    ISBN = models.IntegerField(unique=True)
-    
+    isbn = models.IntegerField()
     

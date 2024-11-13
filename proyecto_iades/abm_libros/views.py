@@ -4,7 +4,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.auth import login, authenticate
 from django.contrib import messages
-from abm_libros.forms import LoginForm, FormularioLibro
+from abm_libros.forms import LoginForm, FormularioLibro, FormularioBusquedaLibro
 from abm_libros.models import Libros
 from django.contrib.auth.decorators import login_required
 
@@ -33,26 +33,51 @@ def visualizacion_administrable(request):
 @login_required
 def formulario_libro(request):
     if request.method == 'POST':
-        print("Entre post")
         formulario = FormularioLibro(request.POST)
-        isbn = formulario.cleaned_data['isbn']
-        
-        print(isbn)
         if formulario.is_valid():
-            print("valido que si")
             datos = formulario.cleaned_data
-            libro_new = Libros(nombre = datos ["nombre"],autor = datos ["autor"],precio = datos ["precio"],stock = datos ["stock"],ISBN = datos ["isbn"])
-            libro_new.save()
-            return HttpResponseRedirect("/abm_libros/visualizacion_administrable")
+            try:
+                libro_new = Libros(nombre = datos ["nombre"],autor = datos ["autor"],precio = datos ["precio"],stock = datos ["stock"],isbn = datos ["isbn"])
+                libro_new.save()
+                messages.success(request,"El libro ha sido guardado correctamente")
+                return HttpResponseRedirect("/abm_libros/visualizacion_administrable")
+            except Exception as e:
+                # Si ocurre algún error durante el guardado
+                messages.error(request, f"Ocurrió un error al guardar el libro: {e}")
+                
         else:
-            print("error")
-            messages.error(request, 'Usuario Invalido o contraseña incorrecta')
+            # Mensaje de error si el formulario no es válido
+            messages.error(request, "El formulario contiene errores. Por favor, verifica los datos.")
     formulario = FormularioLibro()
     return render(request,"formulario_libro.html",{"formulario": formulario})
 
-    
+def busqueda_libro(request):
+    # Guardar la URL de referencia (de dónde vino el usuario)
+    if not request.session.get('previous_url'):
+        request.session['previous_url'] = request.META.get('HTTP_REFERER', '/')
+
+    formulario = FormularioBusquedaLibro(request.GET)
+    resultados = None
+    if formulario.is_valid():
+        isbn_busqueda = formulario.cleaned_data.get('isbn', '')
+        nombre_busqueda = formulario.cleaned_data.get('nombre', '')
+        if isbn_busqueda and nombre_busqueda:
+            resultados = Libros.objects.filter(isbn=isbn_busqueda, nombre__icontains=nombre_busqueda)
+        elif isbn_busqueda:
+            resultados = Libros.objects.filter(isbn=isbn_busqueda)
+        elif nombre_busqueda:
+            resultados = Libros.objects.filter(nombre__icontains=nombre_busqueda)
+
+    return render(request, 'busqueda_libro.html', {"formulario": formulario, "resultados": resultados})
+
+
 def visualizacion_libros(request):
-    return render(request,'visualizacion_libros.html')
+    if not request.session.get('previous_url'):
+        request.session['previous_url'] = request.META.get('HTTP_REFERER', '/')
+
+    libros = Libros.objects.all()
+    return render(request, 'visualizacion_libros.html', {'libros': libros})
+
 
 def inicio(request):
     return render(request,'inicio.html')

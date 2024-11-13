@@ -15,10 +15,7 @@ class FormularioLibro(forms.Form):
     precio = forms.IntegerField()
     stock = forms.IntegerField()
     isbn = forms.IntegerField()
-
-    def clean_isbn(self):
-        isbn = self.cleaned_data['isbn']
-        print("pase isbn")
-        if Libros.objects.filter(isbn=isbn).exists():  # Validación para asegurarse de que no exista el ISBN
-            raise forms.ValidationError("Este ISBN ya está registrado.")
-        return isbn
+    
+class FormularioBusquedaLibro(forms.Form):
+    nombre = forms.CharField(required=False)
+    isbn = forms.IntegerField(required=False)

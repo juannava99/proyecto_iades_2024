@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buscador de Libros</title>
+    <style>
+        body, html {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+            color: #333;
+        }
+        
+        /* Contenedor principal */
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        /* Encabezado */
+        h1 {
+            text-align: center;
+            color: #3498db;
+            margin-bottom: 20px;
+        }
+
+        /* Estilos del formulario */
+        form {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        form table {
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+        form .button-container {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        form input[type="submit"] {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 8px 16px; /* Botón más pequeño */
+            font-size: 14px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            width: auto;
+            max-width: 150px; /* Botón más pequeño */
+        }
+
+        form input[type="submit"]:hover {
+            background-color: #2980b9;
+        }
+
+        /* Botón "Ir a página principal" */
+        .back-button {
+            background-color: #e74c3c; /* Rojo */
+            color: white;
+            border: none;
+            padding: 12px 24px; /* Botón más grande */
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            width: auto;
+            max-width: 200px;
+        }
+
+        .back-button:hover {
+            background-color: #c0392b; /* Rojo más oscuro */
+        }
+
+        /* Resultados */
+        .results {
+            margin-top: 20px;
+        }
+
+        .results h2 {
+            color: #3498db;
+        }
+
+        .results .book-item {
+            background-color: #fff;
+            margin-bottom: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .book-item div {
+            margin-bottom: 10px;
+        }
+
+        .book-item label {
+            font-weight: bold;
+            color: #2980b9;
+        }
+
+        /* Mensaje de no resultados */
+        .no-results {
+            font-size: 18px;
+            color: #e74c3c;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Buscador de Libros</h1>
+        <h3>Puede buscar por los dos filtros o por uno solo</h3>
+        <!-- Formulario de búsqueda -->
+        <form action="/abm_libros/busqueda_libro" method="GET">
+            <table>
+                {{ formulario.as_table }}
+            </table>
+            <div class="button-container">
+                <!-- Botón "Volver a página anterior" -->
+                <button class="back-button" type="button" onclick="window.location.href = '{% if request.session.previous_url %}{{ request.session.previous_url }}{% else %}/{% endif %}'">Volver</button>
+                <input type="submit" value="Buscar">
+            </div>
+        </form>
+
+        <!-- Resultados -->
+        <div class="results">
+            {% if resultados %}
+                <h2>Resultados de la Búsqueda:</h2>
+                {% for libro in resultados %}
+                    <div class="book-item">
+                        <div>
+                            <label>Nombre:</label> {{ libro.nombre }}
+                        </div>
+                        <div>
+                            <label>Autor:</label> {{ libro.autor }}
+                        </div>
+                        <div>
+                            <label>ISBN:</label> {{ libro.isbn }}
+                        </div>
+                        <div>
+                            <label>Precio:</label> ${{ libro.precio }}
+                        </div>
+                        <div>
+                            <label>Stock:</label> {{ libro.stock }}
+                        </div>
+                    </div>
+                {% endfor %}
+            {% elif resultados is not None %}
+                <p class="no-results">No se encontraron resultados.</p>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>

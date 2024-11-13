@@ -6,6 +6,7 @@ from .views import(inicio,
                    login_view,
                    visualizacion_libros,
                    formulario_libro,
+                   busqueda_libro,
 )
 
 
@@ -14,6 +15,7 @@ urlpatterns =[
     path("visualizacion_administrable",visualizacion_administrable, name="visualizacion_administrable"),
     path('login/', login_view, name='login'),
     path('nuevo_libro/', formulario_libro, name='formulario_libro'),
+    path('busqueda_libro/', busqueda_libro, name='busqueda_libro'),
     path('visualizacion_libros', visualizacion_libros, name='visualizacion_libros')
 
 ]
