@@ -83,8 +83,9 @@
             <h1>Gestion de Libros</h1>
             <div class="button-container">
                 <a href="{% url 'formulario_libro' %}" class="button">Añadir Nuevo Libro</a>
-                <a href="{% url 'busqueda_libro' %}" class="button">Buscar Libro</a>
+                <a href="{% url 'busqueda_libro' %}?next=html1" class="button">Buscar Libro</a>
                 <a href="{% url 'visualizacion_libros' %}" class="button">Listar Libros</a>
+
             </div>
         </div>
     </div>

@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, reverse
 from django.http import HttpResponse, HttpResponseRedirect
 
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
@@ -52,10 +52,12 @@ def formulario_libro(request):
     return render(request,"formulario_libro.html",{"formulario": formulario})
 
 def busqueda_libro(request):
-    # Guardar la URL de referencia (de dónde vino el usuario)
-    if not request.session.get('previous_url'):
-        request.session['previous_url'] = request.META.get('HTTP_REFERER', '/')
-
+    origen = request.GET.get('next', 'default')
+    print(f"origen {origen}")
+    if origen == 'html1':
+        url_regreso = reverse('visualizacion_administrable')
+    else:
+        url_regreso = reverse('Inicio')
     formulario = FormularioBusquedaLibro(request.GET)
     resultados = None
     if formulario.is_valid():
@@ -68,7 +70,7 @@ def busqueda_libro(request):
         elif nombre_busqueda:
             resultados = Libros.objects.filter(nombre__icontains=nombre_busqueda)
 
-    return render(request, 'busqueda_libro.html', {"formulario": formulario, "resultados": resultados})
+    return render(request, 'busqueda_libro.html', {"formulario": formulario, "resultados": resultados, "url_regreso": url_regreso})
 
 
 def visualizacion_libros(request):

@@ -131,7 +131,8 @@
             </table>
             <div class="button-container">
                 <!-- Botón "Volver a página anterior" -->
-                <button class="back-button" type="button" onclick="window.location.href = '{% if request.session.previous_url %}{{ request.session.previous_url }}{% else %}/{% endif %}'">Volver</button>
+                <button class="back-button" type="button" onclick="window.location.href = '{{ url_regreso }}'">Volver</button>
+                <input type="hidden" name="next" value="{{ request.GET.next }}">
                 <input type="submit" value="Buscar">
             </div>
         </form>
