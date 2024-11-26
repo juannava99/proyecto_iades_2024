@@ -1,10 +1,9 @@
-{% load static %}
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Buscador de Libros</title>
+    <title>Eliminar Libro</title>
     <style>
         body, html {
             font-family: 'Arial', sans-serif;
@@ -14,34 +13,39 @@
             color: #333;
         }
         
-        /* Contenedor principal */
         .container {
-            max-width: 900px;
+            max-width: 600px;
             margin: 0 auto;
             padding: 20px;
         }
         
-        /* Encabezado */
         h1 {
             text-align: center;
-            color: #3498db;
+            color: #e74c3c;
             margin-bottom: 20px;
         }
 
-        /* Estilos del formulario */
         form {
             background-color: #fff;
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            margin-bottom: 30px;
             display: flex;
             flex-direction: column;
             align-items: flex-start;
         }
 
-        form table {
+        form label {
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        form input[type="text"] {
             width: 100%;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
             margin-bottom: 20px;
         }
 
@@ -49,71 +53,37 @@
             display: flex;
             justify-content: space-between;
             width: 100%;
-            margin-top: 10px;
         }
 
         form input[type="submit"] {
-            background-color: #3498db;
+            background-color: #e74c3c;
             color: white;
             border: none;
-            padding: 8px 16px; /* Botón más pequeño */
+            padding: 10px 20px;
             font-size: 14px;
             border-radius: 5px;
             cursor: pointer;
             transition: background-color 0.3s;
-            width: auto;
-            max-width: 150px; /* Botón más pequeño */
         }
 
         form input[type="submit"]:hover {
-            background-color: #2980b9;
+            background-color: #c0392b;
         }
 
-        /* Botón "Ir a página principal" */
         .back-button {
-            background-color: #e74c3c; /* Rojo */
+            background-color: #3498db;
             color: white;
             border: none;
-            padding: 12px 24px; /* Botón más grande */
-            font-size: 16px;
+            padding: 10px 20px;
+            font-size: 14px;
             border-radius: 5px;
             cursor: pointer;
             transition: background-color 0.3s;
-            width: auto;
-            max-width: 200px;
         }
 
         .back-button:hover {
-            background-color: #c0392b; /* Rojo más oscuro */
+            background-color: #2980b9;
         }
-
-        /* Resultados */
-        .results {
-            margin-top: 20px;
-        }
-
-        .results h2 {
-            color: #3498db;
-        }
-
-        .results .book-item {
-            background-color: #fff;
-            margin-bottom: 20px;
-            padding: 15px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-
-        .book-item div {
-            margin-bottom: 10px;
-        }
-
-        .book-item label {
-            font-weight: bold;
-            color: #2980b9;
-        }
-
-        /* Mensaje de no resultados */
         .no-results {
             font-size: 18px;
             color: #e74c3c;
@@ -123,22 +93,23 @@
 </head>
 <body>
     <div class="container">
-        <h1>Buscador de Libros</h1>
-        <h3>Puede buscar por los dos filtros o por uno solo</h3>
-        <!-- Formulario de búsqueda -->
-        <form action="{% url 'formulario_libro' %}" method="POST">
+        <h1>Eliminar Libro</h1>
+        <form action="/abm_libros/eliminar_libro" method="POST">
             {% csrf_token %}
-            <table>
-                {{ formulario.as_table }}
-            </table>
+            <label for="isbn">Ingrese el ISBN del libro a eliminar:</label>
+            <input type="text" id="isbn" name="isbn" placeholder="ISBN" required>
             <div class="button-container">
-                <!-- Botón "Volver a página anterior" -->
                 <button class="back-button" type="button" onclick="window.location.href = '{% url url_regreso %}'">Volver</button>
-
-                <input type="hidden" name="next" value="{{ request.GET.next }}">
-                <input type="submit" value="Añadir">
+                <input type="submit" value="Eliminar">
             </div>
         </form>
+        {% if messages %}
+        <div class="messages">
+            {% for message in messages %}
+                <div class=" no-results "><br>{{ message }}</div>
+            {% endfor %}
+        </div>
+        {% endif %}
     </div>
 </body>
 </html>

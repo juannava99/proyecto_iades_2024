@@ -1,7 +1,7 @@
 # forms.py
 from django import forms
 from .models import Libros
-class LoginForm(forms.Form):
+class FormularioLogueo(forms.Form):
     usuario = forms.CharField(max_length=150, widget=forms.TextInput(attrs={
         'class': 'form-control', 'placeholder': 'Usuario', 'required': 'required'
     }))

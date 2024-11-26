@@ -1,22 +1,22 @@
-from django.shortcuts import render, redirect, reverse
+from django.shortcuts import render, redirect, reverse, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
 
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.auth import login, authenticate
 from django.contrib import messages
-from abm_libros.forms import LoginForm, FormularioLibro, FormularioBusquedaLibro
+from abm_libros.forms import FormularioLogueo, FormularioLibro, FormularioBusquedaLibro
 from abm_libros.models import Libros
 from django.contrib.auth.decorators import login_required
 
-def login_view(request):
-    form = LoginForm(request.POST or None)
+def logueo_usario(request):
+    formulario_logueo = FormularioLogueo(request.POST or None)
     print(f"metodo: {request.method}")
     if request.method == 'POST':
         print("Entro post")
-        if form.is_valid():
+        if formulario_logueo.is_valid():
             print("Valido formulario")
-            usuario = form.cleaned_data['usuario']
-            contarseña = form.cleaned_data['contraseña']
+            usuario = formulario_logueo.cleaned_data['usuario']
+            contarseña = formulario_logueo.cleaned_data['contraseña']
             user = authenticate(request, username=usuario, password=contarseña)
             if user is not None:
                 login(request, user)
@@ -24,7 +24,7 @@ def login_view(request):
                 return redirect('visualizacion_administrable')  # Redirige a la página principal después de iniciar sesión
             else:
                 messages.error(request, 'Usuario Invalido o contraseña incorrecta')
-    return render(request, 'login.html', {'form': form})
+    return render(request, 'login.html', {'form': formulario_logueo})
 
 @login_required
 def visualizacion_administrable(request):
@@ -49,11 +49,10 @@ def formulario_libro(request):
             # Mensaje de error si el formulario no es válido
             messages.error(request, "El formulario contiene errores. Por favor, verifica los datos.")
     formulario = FormularioLibro()
-    return render(request,"formulario_libro.html",{"formulario": formulario})
+    return render(request,"formulario_libro.html",{"formulario": formulario,"url_regreso": 'visualizacion_administrable' })
 
 def busqueda_libro(request):
     origen = request.GET.get('next', 'default')
-    print(f"origen {origen}")
     if origen == 'html1':
         url_regreso = reverse('visualizacion_administrable')
     else:
@@ -72,13 +71,35 @@ def busqueda_libro(request):
 
     return render(request, 'busqueda_libro.html', {"formulario": formulario, "resultados": resultados, "url_regreso": url_regreso})
 
+@login_required
+def eliminar_libro(request):
+    if request.method == "POST":
+        isbn = request.POST.get('isbn', None)
+        print(f"isbn {isbn}")
+        if isbn:
+            try:
+                libro = get_object_or_404(Libros, isbn=isbn)
+                libro.delete()
+                messages.success(request, f"El libro con ISBN {isbn} ha sido eliminado correctamente.")
+                return HttpResponseRedirect("/abm_libros/visualizacion_administrable")
+
+            except Exception as e:
+                messages.error(request, f"No se pudo eliminar el libro con el ISBN: {str(isbn)}")
+        return redirect('eliminar_libro')
+    
+    return render(request, 'eliminar_libro.html',{"url_regreso": 'visualizacion_administrable' })
+
+
 
 def visualizacion_libros(request):
-    if not request.session.get('previous_url'):
-        request.session['previous_url'] = request.META.get('HTTP_REFERER', '/')
+    origen = request.GET.get('next', 'default')
+    if origen == 'html1':
+        url_regreso = reverse('visualizacion_administrable')
+    else:
+        url_regreso = reverse('Inicio')
 
     libros = Libros.objects.all()
-    return render(request, 'visualizacion_libros.html', {'libros': libros})
+    return render(request, 'visualizacion_libros.html', {'libros': libros,"url_regreso": url_regreso})
 
 
 def inicio(request):
