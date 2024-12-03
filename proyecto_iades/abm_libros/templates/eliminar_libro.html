@@ -94,7 +94,7 @@
 <body>
     <div class="container">
         <h1>Eliminar Libro</h1>
-        <form action="/abm_libros/eliminar_libro" method="POST">
+        <form action="/abm_libros/eliminar_libro/" method="POST">
             {% csrf_token %}
             <label for="isbn">Ingrese el ISBN del libro a eliminar:</label>
             <input type="text" id="isbn" name="isbn" placeholder="ISBN" required>

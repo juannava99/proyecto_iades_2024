@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect, reverse, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
+from django.http import Http404
 
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.auth import login, authenticate
@@ -75,20 +76,22 @@ def busqueda_libro(request):
 def eliminar_libro(request):
     if request.method == "POST":
         isbn = request.POST.get('isbn', None)
-        print(f"isbn {isbn}")
         if isbn:
             try:
                 libro = get_object_or_404(Libros, isbn=isbn)
                 libro.delete()
                 messages.success(request, f"El libro con ISBN {isbn} ha sido eliminado correctamente.")
                 return HttpResponseRedirect("/abm_libros/visualizacion_administrable")
+            
+            except Http404  as e:
+                messages.error(request, f"No se encontró un libro con el ISBN {isbn}.")
 
             except Exception as e:
+                print(f"error       {e}")
                 messages.error(request, f"No se pudo eliminar el libro con el ISBN: {str(isbn)}")
         return redirect('eliminar_libro')
     
     return render(request, 'eliminar_libro.html',{"url_regreso": 'visualizacion_administrable' })
-
 
 
 def visualizacion_libros(request):

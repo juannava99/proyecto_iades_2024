@@ -17,7 +17,7 @@
 
         /* Fondo de la página */
         .background {
-            background-image: url('https://i.pinimg.com/originals/4f/0d/37/4f0d377c4a460fe415a7f692b518260f.jpg'); /* Cambia esta ruta por la imagen de fondo */
+            background-image: url('https://i.pinimg.com/originals/4f/0d/37/4f0d377c4a460fe415a7f692b518260f.jpg');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
@@ -26,6 +26,29 @@
             align-items: center;
             justify-content: center;
             text-align: center;
+        }
+
+        /* Barra superior */
+        .top-bar {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+        }
+
+        .logout-button {
+            background-color: #e74c3c; /* Rojo */
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 1em;
+            cursor: pointer;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+
+        .logout-button:hover {
+            background-color: #c0392b; /* Rojo más oscuro */
         }
 
         /* Estilo del título */
@@ -40,7 +63,7 @@
         }
 
         .button {
-            background-color: #3498db; /* Color azul */
+            background-color: #3498db; /* Azul */
             color: white;
             border: none;
             padding: 15px 30px;
@@ -57,8 +80,9 @@
         }
 
         .button:hover {
-            background-color: #2980b9; /* Color azul más oscuro */
+            background-color: #2980b9; /* Azul más oscuro */
         }
+
         .alert {
             position: absolute;
             top: 0;
@@ -78,15 +102,20 @@
         <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">{{ message }}</div>
     {% endfor %}
     {% endif %}
+    <div class="top-bar">
+        <form method="post" action="{% url 'cerrar_sesion' %}">
+            {% csrf_token %}
+            <button type="submit" class="logout-button">Cerrar sesión</button>
+        </form>
+    </div>
     <div class="background">
         <div>
-            <h1>Gestion de Libros</h1>
+            <h1>Gestión de Libros</h1>
             <div class="button-container">
                 <a href="{% url 'formulario_libro' %}" class="button">Añadir Nuevo Libro</a>
                 <a href="{% url 'busqueda_libro' %}?next=html1" class="button">Buscar Libro</a>
                 <a href="{% url 'visualizacion_libros' %}?next=html1" class="button">Listar Libros</a>
                 <a href="{% url 'eliminar_libro' %}" class="button">Eliminar libro</a>
-
             </div>
         </div>
     </div>

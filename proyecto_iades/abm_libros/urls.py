@@ -1,5 +1,5 @@
 from django.urls import path
-from django.contrib.auth.views import LogoutView
+from django.contrib.auth import views as auth_views
 
 from .views import(inicio,
                    visualizacion_administrable,
@@ -18,6 +18,7 @@ urlpatterns =[
     path('nuevo_libro/', formulario_libro, name='formulario_libro'),
     path('busqueda_libro/', busqueda_libro, name='busqueda_libro'),
     path('visualizacion_libros', visualizacion_libros, name='visualizacion_libros'),
-    path('eliminar_libro', eliminar_libro, name='eliminar_libro')
+    path('eliminar_libro/', eliminar_libro, name='eliminar_libro'),
+    path('cerrar_sesion/', auth_views.LogoutView.as_view(), name='cerrar_sesion')
 
 ]
