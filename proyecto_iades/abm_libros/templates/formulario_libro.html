@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Buscador de Libros</title>
+    <title>Añadir Libro</title>
     <style>
         body, html {
             font-family: 'Arial', sans-serif;
@@ -123,8 +123,7 @@
 </head>
 <body>
     <div class="container">
-        <h1>Buscador de Libros</h1>
-        <h3>Puede buscar por los dos filtros o por uno solo</h3>
+        <h1>Añadir Libro</h1>
         <!-- Formulario de búsqueda -->
         <form action="{% url 'formulario_libro' %}" method="POST">
             {% csrf_token %}
@@ -137,8 +136,14 @@
 
                 <input type="hidden" name="next" value="{{ request.GET.next }}">
                 <input type="submit" value="Añadir">
-            </div>
         </form>
     </div>
+    {% if messages %}
+    <div class="messages">
+        {% for message in messages %}
+            <div class=" no-results "><br>{{ message }}</div>
+        {% endfor %}
+    </div>
+    {% endif %}
 </body>
 </html>

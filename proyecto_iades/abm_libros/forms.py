@@ -12,9 +12,9 @@ class FormularioLogueo(forms.Form):
 class FormularioLibro(forms.Form):
     nombre = forms.CharField()
     autor = forms.CharField()
-    precio = forms.IntegerField()
+    precio = forms.DecimalField()
     stock = forms.IntegerField()
-    isbn = forms.IntegerField()
+    isbn = forms.CharField()
     
 class FormularioBusquedaLibro(forms.Form):
     nombre = forms.CharField(required=False)

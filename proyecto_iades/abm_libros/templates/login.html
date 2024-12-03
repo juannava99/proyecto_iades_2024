@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>Bootstrap Simple Login Form</title>
+<title>Iniciar sesion</title>
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
@@ -46,7 +46,7 @@
 <div class="login-form">
     <form method="post" action="{% url 'login' %}">
         {% csrf_token %}
-        <h2 class="text-center">Iniciar session</h2>
+        <h2 class="text-center">Iniciar sesion</h2>
         {{ form.non_field_errors }}
         <div class="form-group">
             {{ form.usuario }}
@@ -55,7 +55,7 @@
             {{ form.contraseña }}
         </div>
         <div class="form-group">
-            <button type="submit" class="btn btn-primary btn-block">Iniciar session</button>
+            <button type="submit" class="btn btn-primary btn-block">Iniciar sesion</button>
         </div>
     </form>
 

@@ -44,8 +44,8 @@ def formulario_libro(request):
                 return HttpResponseRedirect("/abm_libros/visualizacion_administrable")
             except Exception as e:
                 # Si ocurre algún error durante el guardado
-                messages.error(request, f"Ocurrió un error al guardar el libro: {e}")
-                
+                messages.error(request, f"El ISBN del libro ingresado ya existe")
+            return redirect('formulario_libro')    
         else:
             # Mensaje de error si el formulario no es válido
             messages.error(request, "El formulario contiene errores. Por favor, verifica los datos.")
